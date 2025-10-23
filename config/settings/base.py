@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "django_filters",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
+    # "allauth.socialaccount",  # Disabled for SQLite compatibility (uncomment for PostgreSQL)
     "django_otp",
     "django_otp.plugins.otp_totp",
     "phonenumber_field",

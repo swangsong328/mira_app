@@ -184,7 +184,7 @@ class Command(BaseCommand):
             {"weekday": 3, "start_time": time(9, 0), "end_time": time(20, 0)},  # Thursday
             {"weekday": 4, "start_time": time(9, 0), "end_time": time(20, 0)},  # Friday
             {"weekday": 5, "start_time": time(9, 0), "end_time": time(17, 0)},  # Saturday
-            {"weekday": 6, "is_closed": True},  # Sunday
+            {"weekday": 6, "start_time": time(9, 0), "end_time": time(17, 0), "is_closed": True},  # Sunday
         ]
 
         for hour_data in opening_hours_data:

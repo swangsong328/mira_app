@@ -33,6 +33,7 @@ pydantic==2.6.3
 
 # Caching & Tasks (optional)
 redis==5.0.3
+django-redis==5.4.0
 celery==5.3.6
 
 # Development & Testing

@@ -39,12 +39,17 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 
 # Logging - structured JSON logs for production
-LOGGING["formatters"]["json"] = {  # noqa: F405
-    "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
-    "format": "%(asctime)s %(name)s %(levelname)s %(message)s",
-}
-
-LOGGING["handlers"]["console"]["formatter"] = "json"  # noqa: F405
+# Note: Install python-json-logger for JSON logging in production
+try:
+    from pythonjsonlogger import jsonlogger
+    LOGGING["formatters"]["json"] = {  # noqa: F405
+        "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+        "format": "%(asctime)s %(name)s %(levelname)s %(message)s",
+    }
+    LOGGING["handlers"]["console"]["formatter"] = "json"  # noqa: F405
+except ImportError:
+    # Fall back to verbose formatter if pythonjsonlogger not installed
+    pass
 
 # Error tracking (optional - Sentry)
 SENTRY_DSN = os.getenv("SENTRY_DSN")  # noqa: F405
