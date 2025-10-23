@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ meta.title }}{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Our Services</h1>
+    <p>Browse our professional beauty services</p>
+</header>
+
+<div class="grid">
+    {% for service in services %}
+    <article>
+        {% if service.image %}
+            <img src="{{ service.image.url }}" alt="{{ service.name }}">
+        {% endif %}
+        <h3>{{ service.name }}</h3>
+        <p>{{ service.short_description|default:service.description|truncatewords:25 }}</p>
+        <footer>
+            <div class="grid">
+                <div><strong>${{ service.price }}</strong></div>
+                <div>{{ service.duration }} min</div>
+            </div>
+            <a href="{% url 'services_detail' service.slug %}" role="button">Learn More</a>
+        </footer>
+    </article>
+    {% empty %}
+    <p>No services available at this time.</p>
+    {% endfor %}
+</div>
+
+{% if user.is_authenticated %}
+<section style="text-align: center; margin-top: 3rem;">
+    <a href="{% url 'booking_step1_service' %}" role="button">Book an Appointment</a>
+</section>
+{% endif %}
+{% endblock %}
+
+

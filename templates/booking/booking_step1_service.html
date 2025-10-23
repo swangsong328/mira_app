@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book Appointment - Step 1{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Book an Appointment</h1>
+        <p><strong>Step 1 of 4:</strong> Select a Service</p>
+    </header>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="grid">
+            {% for service in services %}
+            <label>
+                <input type="radio" name="service_id" value="{{ service.id }}" required>
+                <article>
+                    <h4>{{ service.name }}</h4>
+                    <p>{{ service.short_description|truncatewords:15 }}</p>
+                    <footer>
+                        <strong>${{ service.price }}</strong> • {{ service.duration }} min
+                    </footer>
+                </article>
+            </label>
+            {% endfor %}
+        </div>
+
+        <button type="submit">Continue to Step 2 →</button>
+    </form>
+</article>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    label {
+        cursor: pointer;
+    }
+    input[type="radio"] {
+        margin-right: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+

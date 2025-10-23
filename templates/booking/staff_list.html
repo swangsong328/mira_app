@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ meta.title }}{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Our Stylists</h1>
+    <p>Meet our team of professional beauty experts</p>
+</header>
+
+<div class="grid">
+    {% for staff_member in staff %}
+    <article class="text-center">
+        {% if staff_member.avatar %}
+            <img src="{{ staff_member.avatar.url }}" alt="{{ staff_member.get_full_name }}" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover; margin: 0 auto;">
+        {% endif %}
+        <h3>{{ staff_member.get_full_name }}</h3>
+        <p>{{ staff_member.bio|truncatewords:20 }}</p>
+
+        {% if staff_member.services.all %}
+        <details>
+            <summary>Services Offered</summary>
+            <ul>
+                {% for service in staff_member.services.all %}
+                    <li>{{ service.name }}</li>
+                {% endfor %}
+            </ul>
+        </details>
+        {% endif %}
+
+        <a href="{% url 'staff_detail' staff_member.slug %}" role="button" class="secondary">View Profile</a>
+    </article>
+    {% empty %}
+    <p>Staff information coming soon.</p>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .text-center {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+

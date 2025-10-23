@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book Appointment - Step 2{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Book an Appointment</h1>
+        <p><strong>Step 2 of 4:</strong> Select a Stylist</p>
+        <p>Service: <strong>{{ service.name }}</strong></p>
+    </header>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="grid">
+            {% for staff in staff_members %}
+            <label>
+                <input type="radio" name="staff_id" value="{{ staff.id }}" required>
+                <article class="text-center">
+                    {% if staff.avatar %}
+                        <img src="{{ staff.avatar.url }}" alt="{{ staff.get_full_name }}" style="border-radius: 50%; width: 100px; height: 100px; object-fit: cover; margin: 0 auto;">
+                    {% endif %}
+                    <h4>{{ staff.get_full_name }}</h4>
+                    <p>{{ staff.bio|truncatewords:10 }}</p>
+                </article>
+            </label>
+            {% empty %}
+            <p>No stylists available for this service.</p>
+            {% endfor %}
+        </div>
+
+        {% if staff_members %}
+        <button type="submit">Continue to Step 3 →</button>
+        {% endif %}
+    </form>
+
+    <a href="{% url 'booking_step1_service' %}" role="button" class="secondary">← Back</a>
+</article>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    label {
+        cursor: pointer;
+    }
+    .text-center {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+

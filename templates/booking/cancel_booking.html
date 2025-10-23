@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cancel Booking{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Cancel Booking</h1>
+    </header>
+
+    <section>
+        <p>Are you sure you want to cancel this booking?</p>
+
+        <dl>
+            <dt>Service</dt>
+            <dd>{{ booking.service.name }}</dd>
+
+            <dt>Stylist</dt>
+            <dd>{{ booking.staff.get_full_name }}</dd>
+
+            <dt>Date & Time</dt>
+            <dd>{{ booking.start_time|date:"l, F j, Y" }} at {{ booking.start_time|time:"g:i A" }}</dd>
+
+            <dt>Confirmation Code</dt>
+            <dd>{{ booking.confirmation_code }}</dd>
+        </dl>
+    </section>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="contrast">Yes, Cancel Booking</button>
+        <a href="{% url 'my_bookings' %}" role="button" class="secondary">No, Keep Booking</a>
+    </form>
+</article>
+{% endblock %}
+
+

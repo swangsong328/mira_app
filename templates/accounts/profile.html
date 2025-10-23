@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>My Profile</h1>
+    </header>
+
+    <section>
+        <h2>Account Information</h2>
+        <dl>
+            <dt>Email</dt>
+            <dd>
+                {{ user.email }}
+                {% if user.email_verified %}
+                    <span style="color: var(--ins-color);">✓ Verified</span>
+                {% else %}
+                    <span style="color: var(--del-color);">✗ Not Verified</span>
+                {% endif %}
+            </dd>
+
+            <dt>Name</dt>
+            <dd>{{ user.get_full_name|default:"Not set" }}</dd>
+
+            <dt>Phone</dt>
+            <dd>
+                {{ user.phone|default:"Not set" }}
+                {% if user.phone %}
+                    {% if user.phone_verified %}
+                        <span style="color: var(--ins-color);">✓ Verified</span>
+                    {% else %}
+                        <span style="color: var(--del-color);">✗ Not Verified</span>
+                        <a href="{% url 'accounts:verify_phone' %}">Verify Now</a>
+                    {% endif %}
+                {% endif %}
+            </dd>
+
+            <dt>Member Since</dt>
+            <dd>{{ user.created_at|date:"F j, Y" }}</dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2>Notification Preferences</h2>
+        <p>
+            Email Notifications:
+            {% if user.email_notifications %}
+                <strong>Enabled</strong>
+            {% else %}
+                <strong>Disabled</strong>
+            {% endif %}
+        </p>
+        <p>
+            SMS Notifications:
+            {% if user.sms_notifications %}
+                <strong>Enabled</strong>
+            {% else %}
+                <strong>Disabled</strong>
+            {% endif %}
+        </p>
+    </section>
+
+    <footer>
+        <a href="{% url 'my_bookings' %}" role="button">View My Bookings</a>
+        {% if not user.phone_verified and user.phone %}
+            <a href="{% url 'accounts:verify_phone' %}" role="button" class="secondary">Verify Phone</a>
+        {% endif %}
+    </footer>
+</article>
+{% endblock %}
+
+

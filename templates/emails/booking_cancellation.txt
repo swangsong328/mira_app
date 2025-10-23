@@ -1,0 +1,24 @@
+Booking Cancellation - {{ site_name }}
+
+Hello {{ customer.get_full_name|default:customer.email }},
+
+Your booking has been canceled.
+
+CANCELED APPOINTMENT
+-------------------
+Service: {{ booking.service.name }}
+Stylist: {{ booking.staff.get_full_name }}
+Date: {{ booking.start_time|date:"l, F j, Y" }}
+Time: {{ booking.start_time|time:"g:i A" }}
+Confirmation Code: {{ booking.confirmation_code }}
+
+If you'd like to book another appointment, please visit our website.
+
+Thank you for your understanding.
+
+{{ site_name }}
+
+---
+This is an automated message. Please do not reply to this email.
+
+

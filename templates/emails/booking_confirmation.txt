@@ -1,0 +1,35 @@
+Booking Confirmation - {{ site_name }}
+
+Hello {{ customer.get_full_name|default:customer.email }},
+
+Your booking has been confirmed!
+
+APPOINTMENT DETAILS
+-------------------
+Service: {{ service.name }}
+Stylist: {{ staff.get_full_name }}
+Date: {{ booking.start_time|date:"l, F j, Y" }}
+Time: {{ booking.start_time|time:"g:i A" }}
+Duration: {{ service.duration }} minutes
+Price: ${{ booking.price }}
+
+Confirmation Code: {{ booking.confirmation_code }}
+
+IMPORTANT INFORMATION
+--------------------
+Please arrive 5-10 minutes before your appointment time.
+
+If you need to cancel or reschedule, please do so at least 24 hours in advance.
+
+CONTACT US
+----------
+If you have any questions, please contact us at:
+Phone: (555) 123-4567
+Email: info@beautysalon.com
+
+Thank you for choosing {{ site_name }}!
+
+---
+This is an automated message. Please do not reply to this email.
+
+

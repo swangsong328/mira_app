@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ meta.title }}{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>About {{ SITE_NAME }}</h1>
+    </header>
+
+    <section>
+        <h2>Our Story</h2>
+        <p>
+            Welcome to {{ SITE_NAME }}, where beauty meets excellence. We are dedicated to
+            providing top-quality beauty services in a relaxing and professional environment.
+        </p>
+        <p>
+            Our team of experienced professionals is committed to helping you look and feel
+            your best. We use only the finest products and latest techniques to ensure
+            exceptional results every time.
+        </p>
+    </section>
+
+    <section>
+        <h2>Our Team</h2>
+        <div class="grid">
+            {% for staff_member in staff %}
+            <article>
+                {% if staff_member.avatar %}
+                    <img src="{{ staff_member.avatar.url }}" alt="{{ staff_member.get_full_name }}" style="border-radius: 50%; width: 120px; height: 120px; object-fit: cover; margin: 0 auto; display: block;">
+                {% endif %}
+                <h4 style="text-align: center;">{{ staff_member.get_full_name }}</h4>
+                <p>{{ staff_member.bio|truncatewords:30 }}</p>
+                <a href="{% url 'staff_detail' staff_member.slug %}">View Profile →</a>
+            </article>
+            {% empty %}
+            <p>Staff information coming soon.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section>
+        <h2>Opening Hours</h2>
+        {% if opening_hours %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Hours</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hour in opening_hours %}
+                <tr>
+                    <td>{{ hour.get_weekday_display }}</td>
+                    <td>
+                        {% if hour.is_closed %}
+                            <em>Closed</em>
+                        {% else %}
+                            {{ hour.start_time|time:"g:i A" }} - {{ hour.end_time|time:"g:i A" }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Please contact us for our opening hours.</p>
+        {% endif %}
+    </section>
+
+    <footer>
+        <p style="text-align: center;">
+            <a href="{% url 'contact' %}" role="button">Get in Touch</a>
+            <a href="{% url 'booking_step1_service' %}" role="button" class="secondary">Book Appointment</a>
+        </p>
+    </footer>
+</article>
+{% endblock %}
+
+

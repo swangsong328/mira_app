@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ meta.title }}{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you! Get in touch with us using the form below.</p>
+    </header>
+
+    <div class="grid">
+        <section>
+            <h2>Send Us a Message</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <label for="{{ form.name.id_for_label }}">
+                    Name
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <small class="error">{{ form.name.errors.0 }}</small>
+                    {% endif %}
+                </label>
+
+                <label for="{{ form.email.id_for_label }}">
+                    Email
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <small class="error">{{ form.email.errors.0 }}</small>
+                    {% endif %}
+                </label>
+
+                <label for="{{ form.phone.id_for_label }}">
+                    Phone (optional)
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                        <small class="error">{{ form.phone.errors.0 }}</small>
+                    {% endif %}
+                </label>
+
+                <label for="{{ form.subject.id_for_label }}">
+                    Subject
+                    {{ form.subject }}
+                    {% if form.subject.errors %}
+                        <small class="error">{{ form.subject.errors.0 }}</small>
+                    {% endif %}
+                </label>
+
+                <label for="{{ form.message.id_for_label }}">
+                    Message
+                    {{ form.message }}
+                    {% if form.message.errors %}
+                        <small class="error">{{ form.message.errors.0 }}</small>
+                    {% endif %}
+                </label>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Visit Us</h2>
+            <address>
+                <strong>{{ SITE_NAME }}</strong><br>
+                123 Beauty Street<br>
+                City, State 12345<br>
+                <br>
+                <strong>Phone:</strong> (555) 123-4567<br>
+                <strong>Email:</strong> info@beautysalon.com
+            </address>
+
+            <h3>Opening Hours</h3>
+            {% if opening_hours %}
+                <dl>
+                    {% for hour in opening_hours %}
+                        <dt>{{ hour.get_weekday_display }}</dt>
+                        <dd>
+                            {% if hour.is_closed %}
+                                <em>Closed</em>
+                            {% else %}
+                                {{ hour.start_time|time:"g:i A" }} - {{ hour.end_time|time:"g:i A" }}
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                </dl>
+            {% else %}
+                <p>Please call us for our opening hours.</p>
+            {% endif %}
+        </section>
+    </div>
+</article>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error {
+        color: var(--del-color);
+    }
+    address {
+        font-style: normal;
+    }
+</style>
+{% endblock %}
+
+

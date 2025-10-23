@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Contact Form Submission</title>
+</head>
+<body>
+    <h2>New Contact Form Submission</h2>
+
+    <p><strong>From:</strong> {{ submission.name }} &lt;{{ submission.email }}&gt;</p>
+    {% if submission.phone %}<p><strong>Phone:</strong> {{ submission.phone }}</p>{% endif %}
+    <p><strong>Subject:</strong> {{ submission.subject }}</p>
+
+    <p><strong>Message:</strong></p>
+    <p>{{ submission.message|linebreaks }}</p>
+
+    <hr>
+    <p><small>Received at: {{ submission.created_at }}</small></p>
+</body>
+</html>
+
+

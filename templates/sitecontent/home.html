@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load seo_tags %}
+
+{% block title %}{{ meta.title }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <hgroup>
+        <h1>Welcome to {{ SITE_NAME }}</h1>
+        <h2>Professional Beauty Services You Can Trust</h2>
+    </hgroup>
+    <p>
+        <a href="{% url 'booking_step1_service' %}" role="button">Book an Appointment</a>
+        <a href="{% url 'services' %}" role="button" class="secondary">View Services</a>
+    </p>
+</section>
+
+<!-- Featured Services -->
+<section>
+    <h2>Our Services</h2>
+    <div class="grid">
+        {% for service in featured_services %}
+        <article>
+            {% if service.image %}
+                <img src="{{ service.image.url }}" alt="{{ service.name }}">
+            {% endif %}
+            <h3>{{ service.name }}</h3>
+            <p>{{ service.short_description|default:service.description|truncatewords:20 }}</p>
+            <footer>
+                <p><strong>${{ service.price }}</strong> • {{ service.duration }} min</p>
+                <a href="{% url 'services_detail' service.slug %}">Learn More →</a>
+            </footer>
+        </article>
+        {% empty %}
+        <p>No services available at the moment.</p>
+        {% endfor %}
+    </div>
+    <p style="text-align: center; margin-top: 2rem;">
+        <a href="{% url 'services' %}">View All Services →</a>
+    </p>
+</section>
+
+<!-- Featured Staff -->
+<section>
+    <h2>Meet Our Stylists</h2>
+    <div class="grid">
+        {% for staff_member in featured_staff %}
+        <article class="text-center">
+            {% if staff_member.avatar %}
+                <img src="{{ staff_member.avatar.url }}" alt="{{ staff_member.get_full_name }}" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover; margin: 0 auto;">
+            {% endif %}
+            <h4>{{ staff_member.get_full_name }}</h4>
+            <p>{{ staff_member.bio|truncatewords:15 }}</p>
+            <a href="{% url 'staff_detail' staff_member.slug %}">View Profile →</a>
+        </article>
+        {% empty %}
+        <p>Staff information coming soon.</p>
+        {% endfor %}
+    </div>
+    <p style="text-align: center; margin-top: 2rem;">
+        <a href="{% url 'staff' %}">Meet All Our Stylists →</a>
+    </p>
+</section>
+
+<!-- Call to Action -->
+<section class="cta">
+    <hgroup>
+        <h2>Ready to Look Your Best?</h2>
+        <h3>Book your appointment today!</h3>
+    </hgroup>
+    <p>
+        <a href="{% url 'booking_step1_service' %}" role="button">Book Now</a>
+    </p>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        text-align: center;
+        padding: 4rem 0;
+    }
+    .cta {
+        text-align: center;
+        padding: 3rem 0;
+        background-color: var(--card-background-color);
+        border-radius: var(--border-radius);
+        margin-top: 3rem;
+    }
+    .text-center {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+

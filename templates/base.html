@@ -1,0 +1,73 @@
+{% load static %}{% load seo_tags %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    {% block meta_tags %}
+    <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+    <meta name="description" content="{% block description %}Professional beauty salon services{% endblock %}">
+    {% if meta %}
+        <meta name="keywords" content="{{ meta.keywords }}">
+        <link rel="canonical" href="{{ meta.canonical_url }}">
+
+        <!-- Open Graph -->
+        <meta property="og:title" content="{{ meta.og_title }}">
+        <meta property="og:description" content="{{ meta.og_description }}">
+        <meta property="og:image" content="{{ meta.og_image }}">
+        <meta property="og:url" content="{{ meta.og_url }}">
+        <meta property="og:type" content="{{ meta.og_type }}">
+        <meta property="og:site_name" content="{{ meta.og_site_name }}">
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="{{ meta.twitter_card }}">
+        <meta name="twitter:title" content="{{ meta.twitter_title }}">
+        <meta name="twitter:description" content="{{ meta.twitter_description }}">
+        <meta name="twitter:image" content="{{ meta.twitter_image }}">
+    {% endif %}
+    {% endblock %}
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+    <!-- CSS Framework (Pico.css) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+
+    {% block extra_css %}{% endblock %}
+
+    <!-- HTMX (optional, for enhanced interactivity) -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    {% block extra_head %}{% endblock %}
+
+    <!-- JSON-LD Structured Data -->
+    {% block jsonld %}{% endblock %}
+</head>
+<body>
+    {% include 'components/navbar.html' %}
+
+    <main class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <article class="message message-{{ message.tags }}">
+                        {{ message }}
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'components/footer.html' %}
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+
+

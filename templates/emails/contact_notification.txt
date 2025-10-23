@@ -1,0 +1,14 @@
+New Contact Form Submission
+
+From: {{ submission.name }} <{{ submission.email }}>
+{% if submission.phone %}Phone: {{ submission.phone }}{% endif %}
+
+Subject: {{ submission.subject }}
+
+Message:
+{{ submission.message }}
+
+---
+Received at: {{ submission.created_at }}
+
+

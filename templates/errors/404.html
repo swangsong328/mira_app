@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+<article style="text-align: center;">
+    <header>
+        <h1>404</h1>
+        <h2>Page Not Found</h2>
+    </header>
+
+    <p>Sorry, the page you're looking for doesn't exist.</p>
+
+    <footer>
+        <a href="{% url 'home' %}" role="button">Go Home</a>
+        <a href="{% url 'services' %}" role="button" class="secondary">Browse Services</a>
+    </footer>
+</article>
+{% endblock %}
+
+

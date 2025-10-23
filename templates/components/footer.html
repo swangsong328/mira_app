@@ -1,0 +1,44 @@
+<footer class="container-fluid">
+    <hr>
+    <div class="grid">
+        <div>
+            <h6>{{ SITE_NAME }}</h6>
+            <p><small>Professional beauty services you can trust.</small></p>
+        </div>
+        <div>
+            <h6>Quick Links</h6>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'services' %}">Services</a></li>
+                    <li><a href="{% url 'staff' %}">Stylists</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div>
+            <h6>Legal</h6>
+            <nav>
+                <ul>
+                    <li><small>Privacy Policy</small></li>
+                    <li><small>Terms of Service</small></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <p class="text-center"><small>&copy; {% now "Y" %} {{ SITE_NAME }}. All rights reserved.</small></p>
+</footer>
+
+<style>
+    footer {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        background-color: var(--card-background-color);
+    }
+    .text-center {
+        text-align: center;
+    }
+</style>
+
+

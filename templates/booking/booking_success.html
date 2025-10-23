@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Booking Confirmed{% endblock %}
+
+{% block content %}
+<article style="text-align: center;">
+    <header>
+        <h1>✓ Booking Confirmed!</h1>
+        <p>Your appointment has been successfully booked.</p>
+    </header>
+
+    <section>
+        <h2>Appointment Details</h2>
+        <dl>
+            <dt>Confirmation Code</dt>
+            <dd><strong>{{ booking.confirmation_code }}</strong></dd>
+
+            <dt>Service</dt>
+            <dd>{{ booking.service.name }}</dd>
+
+            <dt>Stylist</dt>
+            <dd>{{ booking.staff.get_full_name }}</dd>
+
+            <dt>Date & Time</dt>
+            <dd>{{ booking.start_time|date:"l, F j, Y" }} at {{ booking.start_time|time:"g:i A" }}</dd>
+
+            <dt>Duration</dt>
+            <dd>{{ booking.service.duration }} minutes</dd>
+
+            <dt>Price</dt>
+            <dd><strong>${{ booking.price }}</strong></dd>
+
+            {% if booking.notes %}
+            <dt>Notes</dt>
+            <dd>{{ booking.notes }}</dd>
+            {% endif %}
+        </dl>
+    </section>
+
+    <section>
+        <p>A confirmation email has been sent to <strong>{{ booking.customer.email }}</strong>.</p>
+        {% if booking.customer.phone %}
+        <p>You will also receive an SMS reminder before your appointment.</p>
+        {% endif %}
+    </section>
+
+    <footer>
+        <a href="{% url 'my_bookings' %}" role="button">View My Bookings</a>
+        <a href="{% url 'home' %}" role="button" class="secondary">Back to Home</a>
+    </footer>
+</article>
+{% endblock %}
+
+

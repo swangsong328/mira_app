@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book Appointment - Step 4{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Book an Appointment</h1>
+        <p><strong>Step 4 of 4:</strong> Confirm Booking</p>
+    </header>
+
+    <section>
+        <h2>Appointment Summary</h2>
+        <dl>
+            <dt>Service</dt>
+            <dd>{{ service.name }}</dd>
+
+            <dt>Stylist</dt>
+            <dd>{{ staff.get_full_name }}</dd>
+
+            <dt>Date & Time</dt>
+            <dd>{{ time_slot.start_time|date:"l, F j, Y" }} at {{ time_slot.start_time|time:"g:i A" }}</dd>
+
+            <dt>Duration</dt>
+            <dd>{{ service.duration }} minutes</dd>
+
+            <dt>Price</dt>
+            <dd><strong>${{ service.price }}</strong></dd>
+        </dl>
+    </section>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="notes">
+            Additional Notes (optional)
+            <textarea name="notes" id="notes" rows="3" placeholder="Any special requests or information we should know..."></textarea>
+        </label>
+
+        <button type="submit">Confirm Booking</button>
+    </form>
+
+    <a href="{% url 'booking_step3_time' %}" role="button" class="secondary">← Back</a>
+</article>
+{% endblock %}
+
+

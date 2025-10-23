@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verify OTP Code{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Enter Verification Code</h1>
+        <p>We've sent a 6-digit code to your phone</p>
+    </header>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="{{ form.otp_code.id_for_label }}">
+            Verification Code
+            {{ form.otp_code }}
+            <small>Enter the 6-digit code sent to your phone</small>
+            {% if form.otp_code.errors %}
+                <small class="error">{{ form.otp_code.errors.0 }}</small>
+            {% endif %}
+        </label>
+
+        <button type="submit">Verify Code</button>
+    </form>
+
+    <p><small>Didn't receive the code? <a href="{% url 'accounts:verify_phone' %}">Resend Code</a></small></p>
+</article>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error {
+        color: var(--del-color);
+    }
+</style>
+{% endblock %}
+
+

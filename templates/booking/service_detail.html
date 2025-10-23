@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ service.name }} - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        {% if service.image %}
+            <img src="{{ service.image.url }}" alt="{{ service.name }}" style="max-width: 100%; border-radius: var(--border-radius);">
+        {% endif %}
+        <h1>{{ service.name }}</h1>
+    </header>
+
+    <section>
+        <h2>Service Details</h2>
+        <p>{{ service.description }}</p>
+
+        <dl>
+            <dt>Duration</dt>
+            <dd>{{ service.duration }} minutes ({{ service.duration_hours }} hours)</dd>
+
+            <dt>Price</dt>
+            <dd><strong>${{ service.price }}</strong></dd>
+        </dl>
+    </section>
+
+    {% if staff_members %}
+    <section>
+        <h2>Available Stylists</h2>
+        <div class="grid">
+            {% for staff in staff_members %}
+            <article class="text-center">
+                {% if staff.avatar %}
+                    <img src="{{ staff.avatar.url }}" alt="{{ staff.get_full_name }}" style="border-radius: 50%; width: 100px; height: 100px; object-fit: cover; margin: 0 auto;">
+                {% endif %}
+                <h4>{{ staff.get_full_name }}</h4>
+                <a href="{% url 'staff_detail' staff.slug %}">View Profile</a>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <footer style="text-align: center;">
+        {% if user.is_authenticated %}
+            <a href="{% url 'booking_step1_service' %}" role="button">Book This Service</a>
+        {% else %}
+            <a href="{% url 'account_login' %}?next={% url 'booking_step1_service' %}" role="button">Login to Book</a>
+        {% endif %}
+        <a href="{% url 'services' %}" role="button" class="secondary">Back to Services</a>
+    </footer>
+</article>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .text-center {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+

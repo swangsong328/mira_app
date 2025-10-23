@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book Appointment - Step 3{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Book an Appointment</h1>
+        <p><strong>Step 3 of 4:</strong> Select Date & Time</p>
+        <p>
+            Service: <strong>{{ service.name }}</strong><br>
+            Stylist: <strong>{{ staff.get_full_name }}</strong>
+        </p>
+    </header>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% if slots_by_date %}
+            {% for date, slots in slots_by_date.items %}
+            <section>
+                <h3>{{ date }}</h3>
+                <div class="grid">
+                    {% for slot in slots %}
+                    <label>
+                        <input type="radio" name="slot_id" value="{{ slot.id }}" required>
+                        {{ slot.start_time|time:"g:i A" }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endfor %}
+
+            <button type="submit">Continue to Step 4 →</button>
+        {% else %}
+            <p>No available time slots in the next 14 days. Please contact us directly to schedule an appointment.</p>
+        {% endif %}
+    </form>
+
+    <a href="{% url 'booking_step2_staff' %}" role="button" class="secondary">← Back</a>
+</article>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    label {
+        cursor: pointer;
+        display: inline-block;
+    }
+</style>
+{% endblock %}
+
+
