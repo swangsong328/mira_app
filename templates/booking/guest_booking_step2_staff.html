@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book an Appointment - Choose Staff{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Book: {{ service.name }}</h1>
+        <p>Step 2 of 4: Choose a Staff Member (Optional)</p>
+    </header>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="display: grid; gap: 1rem;">
+            <!-- Any Available Staff Option -->
+            <label style="cursor: pointer; border: 2px solid var(--primary); border-radius: 0.5rem; padding: 1rem; background: var(--primary-focus); transition: all 0.3s;">
+                <input type="radio" name="staff_id" value="any" required style="margin-right: 1rem;">
+                <div style="display: inline-block;">
+                    <strong style="font-size: 1.1em;">⚡ Any Available Staff</strong>
+                    <br>
+                    <small>We'll assign the first available stylist for your chosen time</small>
+                </div>
+            </label>
+
+            <!-- Specific Staff Members -->
+            {% if staff_members %}
+                {% for staff in staff_members %}
+                <label style="cursor: pointer; border: 2px solid var(--muted-border-color); border-radius: 0.5rem; padding: 1rem; transition: all 0.3s;">
+                    <input type="radio" name="staff_id" value="{{ staff.id }}" style="margin-right: 1rem;">
+                    <div style="display: inline-block;">
+                        <strong style="font-size: 1.1em;">{{ staff.get_full_name }}</strong>
+                        <br>
+                        {% if staff.title %}
+                        <small><em>{{ staff.title }}</em></small>
+                        <br>
+                        {% endif %}
+                        {% if staff.bio %}
+                        <small>{{ staff.bio|truncatewords:15 }}</small>
+                        {% endif %}
+                    </div>
+                </label>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <footer style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <a href="{% url 'guest_booking_step1_service' %}" role="button" class="secondary">← Back</a>
+            <button type="submit">Next: Choose Time →</button>
+        </footer>
+    </form>
+</article>
+{% endblock %}
+

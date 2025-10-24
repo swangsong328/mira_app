@@ -44,9 +44,9 @@
 
     <footer style="text-align: center;">
         {% if user.is_authenticated %}
-            <a href="{% url 'booking_step1_service' %}" role="button">Book This Service</a>
+            <a href="{% url 'guest_booking_step1_service' %}" role="button">Book This Service</a>
         {% else %}
-            <a href="{% url 'account_login' %}?next={% url 'booking_step1_service' %}" role="button">Login to Book</a>
+            <a href="{% url 'guest_booking_step1_service' %}" role="button">Book This Service</a>
         {% endif %}
         <a href="{% url 'services' %}" role="button" class="secondary">Back to Services</a>
     </footer>

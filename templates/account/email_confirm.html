@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Confirm Email - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<article style="max-width: 600px; margin: 3rem auto; text-align: center;">
+    <header>
+        <h1>Confirm Your Email Address</h1>
+    </header>
+
+    {% if confirmation %}
+    <section style="background: var(--card-background-color); padding: 2rem; border-radius: 0.5rem; margin: 2rem 0;">
+        <p style="font-size: 1.1em;">
+            Please confirm that <strong>{{ confirmation.email_address.email }}</strong> is your email address.
+        </p>
+        <p>
+            Once confirmed, your account will be created and you can log in.
+        </p>
+    </section>
+
+    <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+        {% csrf_token %}
+        <footer style="display: flex; gap: 1rem; justify-content: center;">
+            <button type="submit" class="primary">✓ Confirm Email Address</button>
+            <a href="{% url 'home' %}" role="button" class="secondary">Cancel</a>
+        </footer>
+    </form>
+    {% else %}
+    <section style="background: var(--del-color); color: white; padding: 2rem; border-radius: 0.5rem; margin: 2rem 0;">
+        <h3 style="margin-top: 0;">Invalid or Expired Link</h3>
+        <p style="margin-bottom: 0;">
+            This verification link is invalid or has expired. 
+            Please request a new verification email.
+        </p>
+    </section>
+
+    <footer>
+        <a href="{% url 'account_signup' %}" role="button" class="primary">Sign Up Again</a>
+        <a href="{% url 'home' %}" role="button" class="secondary">Back to Home</a>
+    </footer>
+    {% endif %}
+</article>
+{% endblock %}
+

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verification Email Sent - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<article style="max-width: 600px; margin: 3rem auto; text-align: center;">
+    <header>
+        <h1 style="color: var(--primary);">✉️ Check Your Email!</h1>
+        <p style="font-size: 1.2em;">We've sent you a verification link</p>
+    </header>
+
+    <section style="background: var(--card-background-color); padding: 2rem; border-radius: 0.5rem; margin: 2rem 0; text-align: left;">
+        <h3 style="margin-top: 0;">What's Next?</h3>
+        <ol style="line-height: 2;">
+            <li><strong>Check your email inbox</strong> at <code>{{ email }}</code></li>
+            <li><strong>Click the activation link</strong> in the email we just sent</li>
+            <li><strong>Your account will be created</strong> after verification</li>
+            <li><strong>Log in</strong> and start booking!</li>
+        </ol>
+    </section>
+
+    <section style="background: var(--primary-focus); padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid var(--primary); text-align: left;">
+        <h4 style="margin-top: 0;">📬 Didn't receive the email?</h4>
+        <ul style="margin-bottom: 0;">
+            <li>Check your <strong>spam/junk folder</strong></li>
+            <li>Make sure you entered the correct email address</li>
+            <li>Wait a few minutes - emails can take time to arrive</li>
+            <li>If still nothing, <a href="{% url 'account_email' %}">request a new verification email</a></li>
+        </ul>
+    </section>
+
+    <footer style="margin-top: 2rem;">
+        <a href="{% url 'home' %}" role="button" class="secondary">← Back to Home</a>
+    </footer>
+</article>
+{% endblock %}
+

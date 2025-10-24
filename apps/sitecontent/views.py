@@ -48,7 +48,7 @@ def about(request: HttpRequest) -> HttpResponse:
         request=request,
         title="About Us",
         description="Learn about our professional beauty salon, our team, and our commitment to excellence.",
-        keywords=["about", "beauty salon", "team", "professionals"],
+        keywords=["beauty salon", "team", "professionals"],
     )
 
     context = {

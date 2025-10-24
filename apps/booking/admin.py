@@ -168,6 +168,8 @@ class BookingAdmin(admin.ModelAdmin):
         "customer__email",
         "customer__first_name",
         "customer__last_name",
+        "guest_email",
+        "guest_name",
         "confirmation_code",
     ]
 
@@ -190,6 +192,17 @@ class BookingAdmin(admin.ModelAdmin):
                     "staff",
                     "time_slot",
                 )
+            },
+        ),
+        (
+            "Guest Booking Info (if no account)",
+            {
+                "fields": (
+                    "guest_email",
+                    "guest_name",
+                    "guest_phone",
+                ),
+                "classes": ("collapse",),
             },
         ),
         (

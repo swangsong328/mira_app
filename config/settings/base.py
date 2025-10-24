@@ -170,10 +170,21 @@ AUTHENTICATION_BACKENDS = [
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # Require email verification before account creation
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False  # Don't ask for email twice
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True  # Ask for password confirmation
+
+# Custom signup form with name and phone fields
+ACCOUNT_FORMS = {
+    'signup': 'apps.accounts.forms.CustomSignupForm',
+}
+
+# Custom adapter for username-less authentication
+ACCOUNT_ADAPTER = 'apps.accounts.adapter.CustomAccountAdapter'
+
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 

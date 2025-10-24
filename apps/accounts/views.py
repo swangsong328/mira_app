@@ -20,7 +20,7 @@ def profile(request: HttpRequest) -> HttpResponse:
     context = {
         "user": request.user,
     }
-    return render(request, "accounts/profile.html", context)
+    return render(request, "account/profile.html", context)
 
 
 @login_required
@@ -47,7 +47,7 @@ def verify_phone(request: HttpRequest) -> HttpResponse:
         form = PhoneVerificationForm()
 
     context = {"form": form}
-    return render(request, "accounts/verify_phone.html", context)
+    return render(request, "account/verify_phone.html", context)
 
 
 @login_required
@@ -77,6 +77,6 @@ def verify_otp(request: HttpRequest) -> HttpResponse:
         form = OTPVerificationForm()
 
     context = {"form": form}
-    return render(request, "accounts/verify_otp.html", context)
+    return render(request, "account/verify_otp.html", context)
 
 

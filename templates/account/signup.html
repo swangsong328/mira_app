@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Up - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<article style="max-width: 500px; margin: 2rem auto;">
+    <header>
+        <h1>Create Your Account</h1>
+        <p>Join us to book appointments and manage your bookings</p>
+    </header>
+
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+        <p style="padding: 1rem; border-radius: 0.5rem; {% if message.tags == 'error' %}background: var(--del-color); color: white;{% else %}background: var(--ins-color);{% endif %}">
+            {{ message }}
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        
+        <fieldset>
+            <legend>Personal Information</legend>
+            
+            <!-- First Name -->
+            <label for="{{ form.first_name.id_for_label }}">
+                {{ form.first_name.label }} <span style="color: red;">*</span>
+                <input 
+                    type="text" 
+                    name="{{ form.first_name.html_name }}"
+                    id="{{ form.first_name.id_for_label }}"
+                    placeholder="{{ form.first_name.field.widget.attrs.placeholder }}"
+                    required
+                    value="{{ form.first_name.value|default:'' }}"
+                    {% if form.first_name.field.widget.attrs.autofocus %}autofocus{% endif %}>
+                {% if form.first_name.errors %}
+                <small style="color: red;">{{ form.first_name.errors|first }}</small>
+                {% endif %}
+            </label>
+
+            <!-- Last Name -->
+            <label for="{{ form.last_name.id_for_label }}">
+                {{ form.last_name.label }} <span style="color: red;">*</span>
+                <input 
+                    type="text" 
+                    name="{{ form.last_name.html_name }}"
+                    id="{{ form.last_name.id_for_label }}"
+                    placeholder="{{ form.last_name.field.widget.attrs.placeholder }}"
+                    required
+                    value="{{ form.last_name.value|default:'' }}">
+                {% if form.last_name.errors %}
+                <small style="color: red;">{{ form.last_name.errors|first }}</small>
+                {% endif %}
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Account Details</legend>
+            
+            <!-- Email -->
+            <label for="{{ form.email.id_for_label }}">
+                {{ form.email.label }} <span style="color: red;">*</span>
+                <input 
+                    type="email" 
+                    name="{{ form.email.html_name }}"
+                    id="{{ form.email.id_for_label }}"
+                    placeholder="your@email.com"
+                    required
+                    value="{{ form.email.value|default:'' }}">
+                {% if form.email.errors %}
+                <small style="color: red;">{{ form.email.errors|first }}</small>
+                {% endif %}
+                <small>We'll send a verification link to this email</small>
+            </label>
+
+            <!-- Phone (Optional) -->
+            <label for="{{ form.phone.id_for_label }}">
+                {{ form.phone.label }}
+                <input 
+                    type="tel" 
+                    name="{{ form.phone.html_name }}"
+                    id="{{ form.phone.id_for_label }}"
+                    placeholder="{{ form.phone.field.widget.attrs.placeholder }}"
+                    value="{{ form.phone.value|default:'' }}">
+                {% if form.phone.errors %}
+                <small style="color: red;">{{ form.phone.errors|first }}</small>
+                {% endif %}
+                {% if form.phone.help_text %}
+                <small>{{ form.phone.help_text }}</small>
+                {% endif %}
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Password</legend>
+            
+            <!-- Password -->
+            <label for="{{ form.password1.id_for_label }}">
+                {{ form.password1.label }} <span style="color: red;">*</span>
+                <input 
+                    type="password" 
+                    name="{{ form.password1.html_name }}"
+                    id="{{ form.password1.id_for_label }}"
+                    placeholder="Enter a secure password"
+                    required>
+                {% if form.password1.errors %}
+                <small style="color: red;">{{ form.password1.errors|first }}</small>
+                {% endif %}
+                {% if form.password1.help_text %}
+                <small>{{ form.password1.help_text }}</small>
+                {% endif %}
+            </label>
+
+            <!-- Password Confirmation -->
+            <label for="{{ form.password2.id_for_label }}">
+                {{ form.password2.label }} <span style="color: red;">*</span>
+                <input 
+                    type="password" 
+                    name="{{ form.password2.html_name }}"
+                    id="{{ form.password2.id_for_label }}"
+                    placeholder="Confirm your password"
+                    required>
+                {% if form.password2.errors %}
+                <small style="color: red;">{{ form.password2.errors|first }}</small>
+                {% endif %}
+            </label>
+        </fieldset>
+
+        <!-- Non-field errors -->
+        {% if form.non_field_errors %}
+        <div style="color: red; padding: 1rem; background: var(--del-color); border-radius: 0.5rem; margin-bottom: 1rem;">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <footer style="display: flex; gap: 1rem; align-items: center;">
+            <button type="submit" class="primary">✓ Create Account</button>
+            <a href="{% url 'account_login' %}" class="secondary" role="button">Already have an account?</a>
+        </footer>
+    </form>
+
+    <section style="margin-top: 2rem; padding: 1rem; background: var(--primary-focus); border-radius: 0.5rem;">
+        <h4 style="margin-top: 0;">📧 Email Verification Required</h4>
+        <p style="margin-bottom: 0;">
+            After clicking "Create Account", we'll send a verification email to your address. 
+            <strong>You must click the activation link in that email</strong> before you can log in.
+        </p>
+    </section>
+</article>
+{% endblock %}
+

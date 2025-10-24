@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Booking Confirmed!{% endblock %}
+
+{% block content %}
+<article style="text-align: center; max-width: 600px; margin: 2rem auto;">
+    <header>
+        <h1 style="color: var(--primary);">✓ Booking Confirmed!</h1>
+        <p style="font-size: 1.2em;">Your appointment has been successfully booked</p>
+    </header>
+
+    <div style="background: var(--card-background-color); padding: 2rem; border-radius: 0.5rem; margin: 2rem 0; text-align: left;">
+        <h3 style="margin-top: 0; text-align: center;">Booking Details</h3>
+        
+        <table style="width: 100%; border: none;">
+            <tr>
+                <td><strong>Confirmation Code:</strong></td>
+                <td><code style="font-size: 1.1em; color: var(--primary);">{{ booking.confirmation_code }}</code></td>
+            </tr>
+            <tr>
+                <td><strong>Service:</strong></td>
+                <td>{{ booking.service.name }}</td>
+            </tr>
+            <tr>
+                <td><strong>Staff:</strong></td>
+                <td>{{ booking.staff.get_full_name }}</td>
+            </tr>
+            <tr>
+                <td><strong>Date & Time:</strong></td>
+                <td>{{ booking.start_time|date:"l, F j, Y" }}<br>{{ booking.start_time|date:"g:i A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Duration:</strong></td>
+                <td>{{ booking.service.duration }} minutes</td>
+            </tr>
+            <tr>
+                <td><strong>Price:</strong></td>
+                <td><strong style="font-size: 1.2em;">${{ booking.price }}</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Email:</strong></td>
+                <td>{{ booking.get_customer_email }}</td>
+            </tr>
+            {% if booking.guest_name %}
+            <tr>
+                <td><strong>Name:</strong></td>
+                <td>{{ booking.guest_name }}</td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+
+    <section style="background: var(--primary-focus); padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid var(--primary); text-align: left;">
+        <h4 style="margin-top: 0;">📧 What's Next?</h4>
+        <ul style="margin-bottom: 0;">
+            <li><strong>Check your email</strong> at <code>{{ booking.get_customer_email }}</code> for confirmation details</li>
+            <li>Save your confirmation code: <code>{{ booking.confirmation_code }}</code></li>
+            <li>You'll receive a reminder email before your appointment</li>
+            <li>If you need to cancel, please call us or use the cancellation link in your email</li>
+        </ul>
+    </section>
+
+    <footer style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+        <a href="{% url 'home' %}" role="button" class="secondary">← Back to Home</a>
+        <a href="{% url 'guest_booking_step1_service' %}" role="button">Book Another Appointment</a>
+    </footer>
+</article>
+
+<style>
+    table tr td {
+        padding: 0.75rem 0;
+        border: none !important;
+        vertical-align: top;
+    }
+    table tr td:first-child {
+        width: 45%;
+    }
+    code {
+        background: var(--code-background-color);
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+    }
+</style>
+{% endblock %}
+

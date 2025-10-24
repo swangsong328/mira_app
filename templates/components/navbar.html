@@ -9,7 +9,7 @@
         <li><a href="{% url 'contact' %}">Contact</a></li>
         {% if user.is_authenticated %}
             <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
-            <li><a href="{% url 'booking_step1_service' %}" role="button">Book Now</a></li>
+            <li><a href="{% url 'guest_booking_step1_service' %}" role="button">Book Now</a></li>
             <li>
                 <details class="dropdown">
                     <summary>{{ user.email }}</summary>

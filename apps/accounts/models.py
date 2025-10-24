@@ -18,8 +18,15 @@ class Customer(AbstractUser):
     Email is primary authentication method, phone is optional.
     """
 
-    # Remove username requirement
-    username = None  # type: ignore
+    # Username field - not used, but kept to satisfy AbstractUser
+    # We use email as USERNAME_FIELD instead
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        blank=True,
+        null=True,
+        help_text="Not used - email is used for authentication",
+    )
 
     # Email as primary identifier
     email = models.EmailField(

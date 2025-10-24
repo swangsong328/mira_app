@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book an Appointment - Confirm Details{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Confirm Your Booking</h1>
+        <p>Step 4 of 4: Enter Your Details</p>
+    </header>
+
+    <!-- Booking Summary -->
+    <section style="background: var(--card-background-color); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+        <h3 style="margin-top: 0;">Booking Summary</h3>
+        <table style="width: 100%; border: none;">
+            <tr>
+                <td><strong>Service:</strong></td>
+                <td>{{ service.name }}</td>
+            </tr>
+            <tr>
+                <td><strong>Staff:</strong></td>
+                <td>{{ staff.get_full_name }}</td>
+            </tr>
+            <tr>
+                <td><strong>Date & Time:</strong></td>
+                <td>{{ time_slot.start_time|date:"l, F j, Y" }} at {{ time_slot.start_time|date:"g:i A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Duration:</strong></td>
+                <td>{{ service.duration }} minutes</td>
+            </tr>
+            <tr>
+                <td><strong>Price:</strong></td>
+                <td><strong style="font-size: 1.2em; color: var(--primary);">${{ service.price }}</strong></td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Customer Details Form -->
+    <form method="post">
+        {% csrf_token %}
+        
+        <fieldset>
+            <legend>Your Contact Information</legend>
+            
+            <label>
+                Email Address <span style="color: red;">*</span>
+                <input 
+                    type="email" 
+                    name="email" 
+                    placeholder="your@email.com" 
+                    required
+                    aria-label="Email address">
+                <small>We'll send your confirmation to this email</small>
+            </label>
+
+            <label>
+                Full Name
+                <input 
+                    type="text" 
+                    name="name" 
+                    placeholder="Your full name"
+                    aria-label="Full name">
+                <small>Optional: Help us know how to greet you</small>
+            </label>
+
+            <label>
+                Phone Number (Optional)
+                <input 
+                    type="tel" 
+                    name="phone" 
+                    placeholder="+1 (123) 456-7890"
+                    aria-label="Phone number">
+                <small>Optional: For SMS reminders</small>
+            </label>
+
+            <label>
+                Special Requests or Notes (Optional)
+                <textarea 
+                    name="notes" 
+                    placeholder="Any special requests, allergies, or preferences?"
+                    rows="3"
+                    aria-label="Special requests"></textarea>
+            </label>
+        </fieldset>
+
+        <footer style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <a href="{% url 'guest_booking_step3_time' %}" role="button" class="secondary">← Back</a>
+            <button type="submit" class="primary">✓ Confirm Booking</button>
+        </footer>
+    </form>
+</article>
+
+<style>
+    table tr td {
+        padding: 0.5rem 0;
+        border: none !important;
+    }
+    table tr td:first-child {
+        width: 40%;
+    }
+</style>
+{% endblock %}
+

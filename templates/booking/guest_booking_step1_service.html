@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book an Appointment - Choose Service{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>Book an Appointment</h1>
+        <p>Step 1 of 4: Choose a Service</p>
+    </header>
+
+    {% if services %}
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="display: grid; gap: 1rem;">
+            {% for service in services %}
+            <label style="cursor: pointer; border: 2px solid var(--muted-border-color); border-radius: 0.5rem; padding: 1rem; transition: all 0.3s;">
+                <input type="radio" name="service_id" value="{{ service.id }}" required style="margin-right: 1rem;">
+                <div style="display: inline-block;">
+                    <strong style="font-size: 1.1em;">{{ service.name }}</strong>
+                    <br>
+                    <small>{{ service.short_description }}</small>
+                    <br>
+                    <small><strong>${{ service.price }}</strong> • {{ service.duration }} minutes</small>
+                </div>
+            </label>
+            {% endfor %}
+        </div>
+
+        <footer style="margin-top: 2rem;">
+            <button type="submit">Next: Choose Staff →</button>
+        </footer>
+    </form>
+    {% else %}
+    <p>No services available at this time. Please check back later.</p>
+    {% endif %}
+</article>
+{% endblock %}
+

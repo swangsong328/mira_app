@@ -323,6 +323,26 @@ class Booking(models.Model):
         on_delete=models.CASCADE,
         related_name="bookings",
         help_text="Customer who made the booking",
+        null=True,
+        blank=True,
+    )
+    
+    # Guest booking fields (for bookings without account)
+    guest_email = models.EmailField(
+        blank=True,
+        help_text="Guest email address (if not logged in)",
+    )
+    
+    guest_name = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Guest full name (if not logged in)",
+    )
+    
+    guest_phone = models.CharField(
+        max_length=20,
+        blank=True,
+        help_text="Guest phone number (optional)",
     )
 
     service = models.ForeignKey(
@@ -401,10 +421,23 @@ class Booking(models.Model):
 
     def __str__(self) -> str:
         """String representation."""
+        customer_info = self.get_customer_email()
         return (
-            f"{self.customer.email} - {self.service.name} - "
+            f"{customer_info} - {self.service.name} - "
             f"{self.start_time.strftime('%Y-%m-%d %H:%M')}"
         )
+    
+    def get_customer_email(self) -> str:
+        """Get customer email (from user or guest field)."""
+        if self.customer:
+            return self.customer.email
+        return self.guest_email
+    
+    def get_customer_name(self) -> str:
+        """Get customer name (from user or guest field)."""
+        if self.customer:
+            return self.customer.get_full_name() or self.customer.email
+        return self.guest_name or self.guest_email
 
     def save(self, *args, **kwargs) -> None:
         """Generate confirmation code and calculate end time."""
@@ -423,6 +456,10 @@ class Booking(models.Model):
 
     def clean(self) -> None:
         """Validate booking."""
+        # Ensure either customer or guest_email is provided
+        if not self.customer and not self.guest_email:
+            raise ValidationError("Either customer account or guest email must be provided")
+        
         # Check if service is provided by staff
         if not self.staff.services.filter(id=self.service.id).exists():
             raise ValidationError(
@@ -472,13 +509,15 @@ class Booking(models.Model):
         context = {
             "booking": self,
             "customer": self.customer,
+            "customer_name": self.get_customer_name(),
+            "customer_email": self.get_customer_email(),
             "service": self.service,
             "staff": self.staff,
         }
 
         # Send email
         email_sent = email_adapter.send_email(
-            to=[self.customer.email],
+            to=[self.get_customer_email()],
             subject="Booking Confirmation",
             template_name="booking_confirmation",
             context=context,
@@ -486,13 +525,22 @@ class Booking(models.Model):
 
         # Send SMS if customer has phone
         sms_sent = False
-        if self.customer.phone and self.customer.sms_notifications:
+        # For registered users
+        if self.customer and self.customer.phone and self.customer.sms_notifications:
             message = (
                 f"Booking confirmed! {self.service.name} with {self.staff.get_full_name()} "
                 f"on {self.start_time.strftime('%b %d at %I:%M %p')}. "
                 f"Confirmation: {self.confirmation_code}"
             )
             sms_sent = sms_adapter.send_sms(to=str(self.customer.phone), message=message)
+        # For guests with phone provided
+        elif self.guest_phone:
+            message = (
+                f"Booking confirmed! {self.service.name} with {self.staff.get_full_name()} "
+                f"on {self.start_time.strftime('%b %d at %I:%M %p')}. "
+                f"Confirmation: {self.confirmation_code}"
+            )
+            sms_sent = sms_adapter.send_sms(to=self.guest_phone, message=message)
 
         return email_sent or sms_sent
 
@@ -511,11 +559,13 @@ class Booking(models.Model):
         context = {
             "booking": self,
             "customer": self.customer,
+            "customer_name": self.get_customer_name(),
+            "customer_email": self.get_customer_email(),
         }
 
         # Send email
         email_sent = email_adapter.send_email(
-            to=[self.customer.email],
+            to=[self.get_customer_email()],
             subject="Booking Canceled",
             template_name="booking_cancellation",
             context=context,
@@ -523,12 +573,20 @@ class Booking(models.Model):
 
         # Send SMS if customer has phone
         sms_sent = False
-        if self.customer.phone and self.customer.sms_notifications:
+        # For registered users
+        if self.customer and self.customer.phone and self.customer.sms_notifications:
             message = (
                 f"Your booking for {self.service.name} on "
                 f"{self.start_time.strftime('%b %d at %I:%M %p')} has been canceled."
             )
             sms_sent = sms_adapter.send_sms(to=str(self.customer.phone), message=message)
+        # For guests with phone provided
+        elif self.guest_phone:
+            message = (
+                f"Your booking for {self.service.name} on "
+                f"{self.start_time.strftime('%b %d at %I:%M %p')} has been canceled."
+            )
+            sms_sent = sms_adapter.send_sms(to=self.guest_phone, message=message)
 
         return email_sent or sms_sent
 
@@ -550,23 +608,33 @@ class Booking(models.Model):
         context = {
             "booking": self,
             "customer": self.customer,
+            "customer_name": self.get_customer_name(),
+            "customer_email": self.get_customer_email(),
         }
 
         # Send email
         email_adapter.send_email(
-            to=[self.customer.email],
+            to=[self.get_customer_email()],
             subject="Appointment Reminder",
             template_name="booking_reminder",
             context=context,
         )
 
         # Send SMS
-        if self.customer.phone and self.customer.sms_notifications:
+        # For registered users
+        if self.customer and self.customer.phone and self.customer.sms_notifications:
             message = (
                 f"Reminder: {self.service.name} appointment tomorrow at "
                 f"{self.start_time.strftime('%I:%M %p')} with {self.staff.get_full_name()}."
             )
             sms_adapter.send_sms(to=str(self.customer.phone), message=message)
+        # For guests with phone provided
+        elif self.guest_phone:
+            message = (
+                f"Reminder: {self.service.name} appointment tomorrow at "
+                f"{self.start_time.strftime('%I:%M %p')} with {self.staff.get_full_name()}."
+            )
+            sms_adapter.send_sms(to=self.guest_phone, message=message)
 
         self.reminder_sent = True
         self.save()
