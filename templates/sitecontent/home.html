@@ -8,10 +8,10 @@
 <section class="hero">
     <hgroup>
         <h1>Welcome to {{ SITE_NAME }}</h1>
-        <h2>Professional Beauty Services You Can Trust</h2>
+        <h2>statement to explain your business (can be updated but i want to hafve a long long long long placeholder here)</h2>
     </hgroup>
     <p>
-        <a href="{% url 'guest_booking_step1_service' %}" role="button">Book an Appointment</a>
+        <a href="{% url 'guest_booking_step1_service' %}" role="button">Book Appointment</a>
         <a href="{% url 'services' %}" role="button" class="secondary">View Services</a>
     </p>
 </section>
@@ -29,21 +29,18 @@
             <p>{{ service.short_description|default:service.description|truncatewords:20 }}</p>
             <footer>
                 <p><strong>${{ service.price }}</strong> • {{ service.duration }} min</p>
-                <a href="{% url 'services_detail' service.slug %}">Learn More →</a>
+                <a href="{% url 'services_detail' service.slug %}">Learn More</a>
             </footer>
         </article>
         {% empty %}
         <p>No services available at the moment.</p>
         {% endfor %}
     </div>
-    <p style="text-align: center; margin-top: 2rem;">
-        <a href="{% url 'services' %}">View All Services →</a>
-    </p>
 </section>
 
 <!-- Featured Staff -->
 <section>
-    <h2>Meet Our Stylists</h2>
+    <h2>Our Team Members</h2>
     <div class="grid">
         {% for staff_member in featured_staff %}
         <article class="text-center">
@@ -52,23 +49,17 @@
             {% endif %}
             <h4>{{ staff_member.get_full_name }}</h4>
             <p>{{ staff_member.bio|truncatewords:15 }}</p>
-            <a href="{% url 'staff_detail' staff_member.slug %}">View Profile →</a>
+            <a href="{% url 'staff_detail' staff_member.slug %}">View Profile</a>
         </article>
         {% empty %}
         <p>Staff information coming soon.</p>
         {% endfor %}
     </div>
-    <p style="text-align: center; margin-top: 2rem;">
-        <a href="{% url 'staff' %}">Meet All Our Stylists →</a>
-    </p>
 </section>
 
 <!-- Call to Action -->
 <section class="cta">
-    <hgroup>
-        <h2>Ready to Look Your Best?</h2>
-        <h3>Book your appointment today!</h3>
-    </hgroup>
+    <h2>Ready to Look Your Best?</h2>
     <p>
         <a href="{% url 'guest_booking_step1_service' %}" role="button">Book Now</a>
     </p>
