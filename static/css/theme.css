@@ -190,3 +190,23 @@ img {
 }
 
 
+/* Compact navbar overrides (Option A) */
+nav.container-fluid {
+    padding-block: 0.5rem; /* reduce vertical padding */
+    font-size: 0.95rem;    /* slightly smaller text */
+}
+
+nav.container-fluid ul {
+    margin: 0;             /* remove extra vertical space */
+    gap: 0.5rem;           /* tighten spacing between items */
+}
+
+nav.container-fluid a,
+nav.container-fluid summary {
+    padding: 0.25rem 0.5rem; /* tighten link/summary hit area */
+    line-height: 1.2;        /* reduce line height */
+}
+
+nav.container-fluid [role="button"] {
+    padding: 0.35rem 0.75rem; /* smaller button in navbar */
+}
