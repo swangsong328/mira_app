@@ -9,7 +9,7 @@
         <h1>Book: {{ service.name }}</h1>
         <p>Step 3 of 4: Choose Date & Time</p>
         {% if any_staff %}
-        <small><strong>Staff:</strong> Any Available</small>
+        <small><strong>Staff:</strong> Any Available – we'll assign a team member for you.</small>
         {% elif staff %}
         <small><strong>Staff:</strong> {{ staff.get_full_name }}</small>
         {% endif %}
@@ -32,9 +32,6 @@
                     <input type="radio" name="slot_id" value="{{ slot.id }}" required style="display: none;">
                     <div>
                         <strong>{{ slot.start_time|date:"g:i A" }}</strong>
-                        {% if any_staff %}
-                        <br><small>{{ slot.staff.get_full_name }}</small>
-                        {% endif %}
                     </div>
                 </label>
                 {% endfor %}

@@ -144,7 +144,7 @@ def booking_step3_time(request: HttpRequest) -> HttpResponse:
     ).order_by("start_time")
 
     # Group by date
-    slots_by_date: Dict[str, list] = {}
+    slots_by_date: Dict[str, list[TimeSlot]] = {}
     for slot in available_slots:
         if slot.is_available():
             date_key = slot.start_time.date().isoformat()
@@ -364,12 +364,22 @@ def guest_booking_step3_time(request: HttpRequest) -> HttpResponse:
         ).order_by("start_time")
 
     # Group by date and filter available
-    slots_by_date: Dict[str, list] = {}
+    slots_by_date: Dict[str, list[TimeSlot]] = {}
+    seen_times_for_date: Dict[str, set[datetime]] = {}
     for slot in available_slots:
         if slot.is_available():
             date_key = slot.start_time.date().isoformat()
             if date_key not in slots_by_date:
                 slots_by_date[date_key] = []
+            if any_staff:
+                if date_key not in seen_times_for_date:
+                    seen_times_for_date[date_key] = set()
+                # Skip duplicate times when "Any Available" is selected so
+                # guests only choose a time slot. A specific staff member will
+                # be assigned automatically once the slot is booked.
+                if slot.start_time in seen_times_for_date[date_key]:
+                    continue
+                seen_times_for_date[date_key].add(slot.start_time)
             slots_by_date[date_key].append(slot)
 
     if request.method == "POST":
