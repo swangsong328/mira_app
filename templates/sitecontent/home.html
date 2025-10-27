@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero">
+<section class="hero" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('{{ background_image_url }}');">
     <hgroup>
         <h1>Welcome to {{ SITE_NAME }}</h1>
         <h2>statement to explain your business (can be updated but i want to hafve a long long long long placeholder here)</h2>
@@ -70,7 +70,17 @@
 <style>
     .hero {
         text-align: center;
-        padding: 4rem 0;
+        padding: 6rem 1rem;
+        background-size: cover;
+        background-position: center 20%;
+        background-repeat: no-repeat;
+        color: white;
+        border-radius: var(--border-radius);
+    }
+    @media (max-width: 768px) {
+        .hero {
+            background-position: center 30%;
+        }
     }
     .cta {
         text-align: center;
@@ -82,6 +92,11 @@
     .text-center {
         text-align: center;
     }
+    .hero h1, .hero h2 {
+        text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+        margin: 0.25rem 0;
+    }
+    .hero p { margin-top: 1rem; }
 </style>
 {% endblock %}
 

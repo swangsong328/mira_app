@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from django.contrib import messages
+import random
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
@@ -20,6 +21,13 @@ def home(request: HttpRequest) -> HttpResponse:
     featured_services = Service.objects.filter(is_active=True)[:3]
     featured_staff = Staff.objects.filter(is_active=True)[:4]
 
+    # Curated skincare-themed background images (served via CDN)
+    skincare_backgrounds = [
+        # Single female facial skincare image
+        "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1600&auto=format&fit=crop&q=80",
+    ]
+    background_image_url = random.choice(skincare_backgrounds)
+
     meta = get_page_meta(
         request=request,
         title="Welcome to Beauty Salon",
@@ -31,6 +39,7 @@ def home(request: HttpRequest) -> HttpResponse:
         "featured_services": featured_services,
         "featured_staff": featured_staff,
         "meta": meta,
+        "background_image_url": background_image_url,
     }
     return render(request, "sitecontent/home.html", context)
 
