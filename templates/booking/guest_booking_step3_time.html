@@ -21,9 +21,9 @@
         
         {% for date, slots in slots_by_date.items %}
         <details {% if forloop.first %}open{% endif %} style="margin-bottom: 1rem;">
-            <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem; background: var(--card-background-color); border-radius: 0.25rem;">
+            <summary style="cursor: pointer; font-weight: 400; padding: 0.5rem; background: var(--card-background-color); border-radius: 0.25rem;">
                 {{ slots.0.start_time|date:"l, F j, Y" }}
-                <small style="font-weight: normal;">({{ slots|length }} slots available)</small>
+                <small style="font-weight: 400;">({{ slots|length }} slots available)</small>
             </summary>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.5rem; margin-top: 1rem;">
